@@ -1,0 +1,40 @@
+.songHeader
+  height: 300px
+  background: url(http://zmp3-photo-td.zadn.vn/cover3_artist/4/7/47789cfc1ae9c2698806b6f49dbb6132_1456290746.jpg)
+  position: relative
+
+  > div
+    &:first-child
+      height: inherit
+      background-color: rgba(0, 0, 0, .7)
+
+.karaokeWrapper
+  position: absolute
+  left: 50%
+  top: 40%
+  transform: translate(-50%, -50%)
+  width: 100%
+  text-align: center
+.progressWrapper
+  position: absolute
+  bottom: 0
+  right: 0
+  left: 0
+  height: 30%
+  cursor: pointer
+.progress
+  height: 100%
+  background: rgba(34, 184, 207, 0.3)
+  float: right
+  width: 60%
+.progressActive
+  background: rgba(35, 155, 86 , 0.3)
+  height: 100%
+  float: left
+  width: 40%
+
+.seekBar
+  cursor: pointer
+  height: 100%
+  position: absolute
+  background: rgba(230, 126, 34 , 0.4)
