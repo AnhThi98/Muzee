@@ -1,8 +1,10 @@
 import { combineReducers } from 'redux';
-import lyricReducer from './lyric_reducer';
+import playerReducer from './player_reducer';
 import songReducer from './song_reducer';
+import seekBarReducer from './seekbar_reducer';
 
 export default combineReducers({
-  lyric: lyricReducer,
+  playerState: playerReducer,
   songData: songReducer,
+  seekBarState: seekBarReducer,
 });

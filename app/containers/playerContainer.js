@@ -2,22 +2,28 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Player } from '../components';
 import { updateLyric, updateLyricPercent } from '../actions/player';
+import { updateSongCurrentTime,
+  updateSongDuration,
+  fullFillSeekBar,
+  unFullFillSeekBar,
+} from '../actions/seekbar';
 
 function PlayerContainer(props) {
-  const { lyric, updateLyric, updateLyricPercent, songData } = props;
   return (
-    <Player
-      lyric={lyric}
-      updateLyric={updateLyric}
-      updateLyricPercent={updateLyricPercent}
-      songData={songData}
-    />
+    <Player {...props}/>
   );
 }
 
-function mapStateToProps({ lyric, songData }) {
-  return { lyric, songData };
+function mapStateToProps({ playerState, songData }) {
+  return { playerState, songData };
 }
 
-export default connect(mapStateToProps, { updateLyric, updateLyricPercent })(PlayerContainer);
+export default connect(mapStateToProps,
+  { updateLyric,
+    updateLyricPercent,
+    updateSongCurrentTime,
+    updateSongDuration,
+    fullFillSeekBar,
+    unFullFillSeekBar,
+  })(PlayerContainer);
 

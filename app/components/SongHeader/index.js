@@ -1,12 +1,13 @@
 import React from 'react';
 import KaraokeLyric from 'react-karaoke-lyric';
 import { connect } from 'react-redux';
-import Progress from './progress';
+import SeekBar from './seekbar';
+import { updatePlayedPercent } from '../../actions/player';
 import './index.sass';
 
 
 function SongHeader(props) {
-  const { per1, per2, lyric1, lyric2 } = props.lyric;
+  const { per1, per2, lyric1, lyric2 } = props.playerState;
 
   return (
     <div className='songHeader'>
@@ -25,14 +26,17 @@ function SongHeader(props) {
           activeStyle={{ color: 'skyblue' }}
         />
       </div>
-      <Progress />
+      <SeekBar
+        seekBarState={props.seekBarState}
+        updatePlayedPercent={props.updatePlayedPercent}
+      />
     </div>
   );
 }
 
 function mapStateToProps(state) {
-  const { lyric } = state;
-  return { lyric };
+  const { playerState, seekBarState } = state;
+  return { playerState, seekBarState };
 }
 
-export default connect(mapStateToProps)(SongHeader);
+export default connect(mapStateToProps, { updatePlayedPercent })(SongHeader);

@@ -7,10 +7,14 @@ import pauseIcon from '../../svg/ios-pause.svg';
 import './index.sass';
 
 const propTypes = {
-  lyric: PropTypes.object.isRequired,
+  playerState: PropTypes.object.isRequired,
   updateLyric: PropTypes.func.isRequired,
   updateLyricPercent: PropTypes.func.isRequired,
   songData: PropTypes.object.isRequired,
+  updateSongDuration: PropTypes.func.isRequired,
+  updateSongCurrentTime: PropTypes.func.isRequired,
+  fullFillSeekBar: PropTypes.func.isRequired,
+  unFullFillSeekBar: PropTypes.func.isRequired,
 };
 
 class Player extends React.Component {
@@ -25,6 +29,8 @@ class Player extends React.Component {
   componentDidMount() {
     this.audio = this.refs.audio;
     this.audio.onplay = () => {
+      this.props.unFullFillSeekBar();
+      this.props.updateSongDuration(this.audio.duration);
       this.timer = setInterval(() => this.updateProgress(this.audio), 50);
     };
     this.audio.onpause = () => clearInterval(this.timer);
@@ -38,11 +44,27 @@ class Player extends React.Component {
     return !compareTwoObjects(this.props.lyric, nextProps.lyric);
   }*/
 
+  componentWillReceiveProps(nextProps) {
+    // update the seekbar
+    const nextPercent = nextProps.playerState.playedPercent;
+    const currentPercent = this.props.playerState.playedPercent;
+    if (nextPercent != currentPercent  && nextPercent != undefined) {
+      this.audio.currentTime = this.audio.duration * nextPercent / 100;
+    }
+  }
+
   updateProgress(audio) {
     const lyric = this.props.songData.lyric;
     if (!lyric) return;
 
-    const { lyric: { lyric1, lyric2 }, updateLyricPercent, updateLyric } = this.props;
+    const {
+      playerState: { lyric1, lyric2 },
+      updateLyricPercent,
+      updateLyric,
+      updateSongCurrentTime,
+    } = this.props;
+
+    updateSongCurrentTime(this.audio.currentTime);
 
     if (audio.currentTime > lyric[lyric.length - 1].end) {
       updateLyric([], []);
@@ -85,6 +107,7 @@ class Player extends React.Component {
 
   handleChangeComplete(value) {
     if (value == 100) {
+      this.props.fullFillSeekBar();
       this.props.updateLyric([], []);
     }
 
