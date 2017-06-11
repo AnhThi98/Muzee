@@ -1,6 +1,12 @@
 import React from 'react';
+import PropTypes from 'prop-types';
+import SuggestedSection from './SuggestedSection';
 import addCircle from '../../svg/android-add-circle.svg';
 import './index.sass';
+
+const propTypes = {
+  suggestedSongs: PropTypes.array.isRequired,
+};
 
 class SongBody extends React.Component {
   render() {
@@ -73,24 +79,12 @@ class SongBody extends React.Component {
             </div>
           </div>
         </div>
-        <div className="suggested-section">
-          <div className="suggested-section-heading">
-            <h3>Gợi ý</h3>
-          </div>
-          <div className="suggested-section-body">
-            <div className="suggested-song">
-              <img src="http://zmp3-photo-td.zadn.vn/thumb/94_94/covers/f/3/f3ccdd27d2000e3f9255a7e3e2c48800_1493277779.jpg" alt=""/>
-              <div className="suggested-song-info">
-                <a href="#" className='suggested-song-name'>Não Cá Vàng</a>
-                <a href="#" className='suggested-song-artist'>OnlyC, </a>
-                <a href="#" className='suggested-song-artist' style={{marginLeft: '2px'}}>Lou Hoàng</a>
-              </div>
-            </div>
-          </div>
-        </div>
+        <SuggestedSection songs={this.props.suggestedSongs}/>
       </div>
     );
   }
 }
+
+SongBody.propTypes = propTypes;
 
 export default SongBody;

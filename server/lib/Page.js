@@ -85,6 +85,8 @@ Page.prototype.getExtractedAttrs = function () {
   return this.attrsToBeExtracted;
 };
 
+
+
 function hasOwnProperty(obj, prop) {
   return Object.prototype.hasOwnProperty.call(obj, prop);
 }
@@ -103,7 +105,15 @@ Page.prototype.get = function () {
         arr.forEach(obj => {
           const { attr, keyIncludedInResult } = obj;
           const $el = this.$(element).find(selector);
-          doc[keyIncludedInResult] = this.attr($el, attr);
+          if (keyIncludedInResult === 'id') {
+
+            // get the song id
+            const match = /(\w+)\.html$/.exec(this.attr($el, attr));
+            const [, id] = match;
+            doc[keyIncludedInResult] = id;
+          } else {
+            doc[keyIncludedInResult] = this.attr($el, attr);
+          }
         });
       }
     });

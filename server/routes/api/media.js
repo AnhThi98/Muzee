@@ -52,6 +52,7 @@ router.get('/suggested-song/:id', (req, res, next) => {
         .setType('song')
         .setExtractedAttr('src', '.fn-thumb', 'thumb')
         .setExtractedAttr('text', '.song-name a', 'songName')
+        .setExtractedAttr('href', '.song-name a', 'id')
         .setExtractedAttr(null, '.singer-name a', 'artists');
       res.json(parser.get());
     })

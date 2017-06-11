@@ -1,13 +1,15 @@
 import React from 'react';
+import { Link } from 'react-router';
 import './nav.sass';
+
 
 function Nav() {
   return (
     <nav>
       <div className="logo">
-        <a href="#">
+        <Link to="/">
           <img src="https://a-v2.sndcdn.com/assets/images/header/wordmark-d95b0ac.png" alt=""/>
-        </a>
+        </Link>
       </div>
       <div className="searchBar">
         <div className="search-wrapper">

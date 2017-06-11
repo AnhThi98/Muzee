@@ -6,8 +6,8 @@ import thunk from 'redux-thunk';
 import { createLogger } from 'redux-logger';
 import { Router, Route, browserHistory, IndexRoute, Link } from 'react-router';
 import { syncHistoryWithStore } from 'react-router-redux';
-import { Nav, SongBody } from './components';
-import { PlayerContainer, SongHeaderContainer } from './containers';
+import { Nav } from './components';
+import { PlayerContainer, SongPageContainer } from './containers';
 import Analyzer from './components/Analyzer';
 import rootReducer from './reducers';
 import { UPDATE_LYRIC, UPDATE_LYRIC_PERCENT, UPDATE_SONG_CURRENT_TIME } from './constant/action_constant';
@@ -30,24 +30,29 @@ class App extends React.Component {
         <Nav />
         <div className="container">
           {this.props.children}
-          <Link to='/song'>song</Link>
-          <Link to='/'>Back</Link>
           <Analyzer />
-          <SongBody />
         </div>
         <PlayerContainer />
       </div>
     );
   }
 }
-const Com = () => <h1>hihi</h1>;
+const Com = () =>
+  <div>
+    <Link to='/song/Heroes-Tonight/IWBZ9I00'>Heroes</Link>
+    <br />
+    <Link to='/song/Noi-Nay-Co-Anh/ZW79ZBE8'>Noi nay co anh</Link>
+    <br />
+    <Link to='/song/Spring-Day/ZW79ZZ7I'>spring day</Link>
+  </div>
+;
 
 render(
   <Provider store={store}>
     <Router history={history}>
       <Route path='/' component= {App}>
         <IndexRoute component={Com} />
-        <Route path='song' component={SongHeaderContainer} />
+        <Route path='song/:name/:id' component={SongPageContainer} />
       </Route>
     </Router>
   </Provider>, document.getElementById('app'));

@@ -18,6 +18,20 @@ const propTypes = {
   unFullFillSeekBar: PropTypes.func.isRequired,
 };
 
+
+const routeRegex = /\/song\/([A-Za-z0-9_-]+)\/(\w{8})/g;
+
+const fetchSongIfPossible = function (match, componentInstance) {
+  const _this = componentInstance;
+  if (match) {
+    const [, name, id] = match;
+    if (id !== _this.state.id) {
+      _this.props.fetchSong(name, id);
+      _this.setState({ id, progress: 0 }); // reset the player progress
+    }
+  }
+};
+
 class Player extends React.Component {
   constructor() {
     super();
@@ -25,6 +39,7 @@ class Player extends React.Component {
       progress: 0,
       isSeeking: false,
       isInit: false,
+      id: undefined,
     };
   }
 
@@ -36,17 +51,18 @@ class Player extends React.Component {
       this.timer = setInterval(() => this.updateProgress(this.audio), 50);
     };
     this.audio.onpause = () => clearInterval(this.timer);
-    this.props.fetchSong();
+
+    // fetchsong on entering directly to the song address
+    const match = routeRegex.exec(window.location.pathname);
+    fetchSongIfPossible(match, this);
+
+    // initialize the audio analyzer
     initAnalyzer(this.audio);
   }
 
   componentWillUnmount() {
     clearInterval(this.timer);
   }
-
-  /*shouldComponentUpdate(nextProps) {
-    return !compareTwoObjects(this.props.lyric, nextProps.lyric);
-  }*/
 
   componentWillReceiveProps(nextProps) {
     // update the seekbar
@@ -55,11 +71,17 @@ class Player extends React.Component {
     if (nextPercent != currentPercent  && nextPercent != undefined) {
       this.audio.currentTime = this.audio.duration * nextPercent / 100;
     }
+
+    // fetchsong when receive new route props
+    const loc = nextProps.routing.locationBeforeTransitions;
+    const match = loc && routeRegex.exec(loc.pathname);
+    fetchSongIfPossible(match, this);
   }
 
   updateProgress(audio) {
     const lyric = this.props.songData.lyric;
     const { updateSongCurrentTime } = this.props;
+
     // update progress bar
     let val = 0;
     if (audio.currentTime > 0) {
@@ -80,7 +102,9 @@ class Player extends React.Component {
     } = this.props;
 
 
-    if (audio.currentTime > lyric[lyric.length - 1].end) {
+    if (audio.currentTime > lyric[lyric.length - 1].end || audio.currentTime) {
+
+      // clear lyric when the audio is playing with beat only
       updateLyric([], []);
     }
 

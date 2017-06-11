@@ -1,13 +1,17 @@
 import axios from 'axios';
 import { FETCH_SONG_SUCCESS } from '../constant/action_constant';
 
-export function fetchSong() {
+export function fetchSong(name, id) {
   return dispatch => {
-    axios.get('/api/media/song?name=What-Do-You-Meanr&id=ZW7W9DZU')
+    axios.get(`/api/media/song?name=${name}&id=${id}`)
     .then(({ data }) => dispatch({
       type: FETCH_SONG_SUCCESS,
       data,
     }))
     .catch(err => console.log(err));
   };
+}
+
+export function fetchSuggestedSong(id) {
+  return axios.get(`/api/media/suggested-song/${id}`);
 }

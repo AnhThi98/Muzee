@@ -22,22 +22,21 @@ function SongHeader(props) {
           <h2>{props.name}</h2>
           <h3>{props.artist}</h3>
         </div>
-        : null
+        : <div className='karaokeWrapper'>
+          <KaraokeLyric
+            text={lyric1.text || ''}
+            percentage={per1 || 0}
+            activeStyle={{ color: 'skyblue' }}
+          />
+          <br />
+          <br />
+          <KaraokeLyric
+            text={lyric2.text || ''}
+            percentage={per2 || 0}
+            activeStyle={{ color: 'skyblue' }}
+          />
+        </div>
       }
-      <div className='karaokeWrapper'>
-        <KaraokeLyric
-          text={lyric1.text || ''}
-          percentage={per1 || 0}
-          activeStyle={{ color: 'skyblue' }}
-        />
-        <br />
-        <br />
-        <KaraokeLyric
-          text={lyric2.text || ''}
-          percentage={per2 || 0}
-          activeStyle={{ color: 'skyblue' }}
-        />
-      </div>
       <SeekBar
         seekBarState={props.seekBarState}
         updatePlayedPercent={props.updatePlayedPercent}
