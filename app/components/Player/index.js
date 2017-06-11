@@ -16,6 +16,8 @@ const propTypes = {
   updateSongCurrentTime: PropTypes.func.isRequired,
   fullFillSeekBar: PropTypes.func.isRequired,
   unFullFillSeekBar: PropTypes.func.isRequired,
+  fetchSuggestedSongs: PropTypes.func.isRequired,
+  fetchsong: PropTypes.func.isRequired,
 };
 
 
@@ -27,6 +29,7 @@ const fetchSongIfPossible = function (match, componentInstance) {
     const [, name, id] = match;
     if (id !== _this.state.id) {
       _this.props.fetchSong(name, id);
+      _this.props.fetchSuggestedSongs(id);
       _this.setState({ id, progress: 0 }); // reset the player progress
     }
   }

@@ -8,7 +8,7 @@ function SongHeaderContainer(props) {
 }
 
 function mapStateToProps(state) {
-  const { playerState, seekBarState, songData: { cover, artist, name, lyric } } = state;
+  const { playerState, seekBarState, songData: { data: { cover, artist, name, lyric } } } = state;
   return { playerState,
     seekBarState,
     cover,

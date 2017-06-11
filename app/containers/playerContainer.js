@@ -2,7 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Player } from '../components';
 import { updateLyric, updateLyricPercent } from '../actions/player';
-import { fetchSong } from '../actions/song';
+import { fetchSong, fetchSuggestedSongs } from '../actions/song';
 import { updateSongCurrentTime,
   updateSongDuration,
   fullFillSeekBar,
@@ -16,7 +16,7 @@ function PlayerContainer(props) {
 }
 
 function mapStateToProps({ playerState, songData, routing }) {
-  return { playerState, songData, routing };
+  return { playerState, songData: songData.data, routing };
 }
 
 export default connect(mapStateToProps,
@@ -27,5 +27,6 @@ export default connect(mapStateToProps,
     fullFillSeekBar,
     unFullFillSeekBar,
     fetchSong,
+    fetchSuggestedSongs,
   })(PlayerContainer);
 

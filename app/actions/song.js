@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { FETCH_SONG_SUCCESS } from '../constant/action_constant';
+import { FETCH_SONG_SUCCESS, FETCH_SUGGESTED_SONG_SUCCESS } from '../constant/action_constant';
 
 export function fetchSong(name, id) {
   return dispatch => {
@@ -12,6 +12,13 @@ export function fetchSong(name, id) {
   };
 }
 
-export function fetchSuggestedSong(id) {
-  return axios.get(`/api/media/suggested-song/${id}`);
+export function fetchSuggestedSongs(id) {
+  return dispatch => {
+    axios.get(`/api/media/suggested-song/${id}`)
+      .then(({ data }) => dispatch({
+        type: FETCH_SUGGESTED_SONG_SUCCESS,
+        songs: data.songs,
+      }))
+      .catch(err => console.log(err));
+  };
 }
