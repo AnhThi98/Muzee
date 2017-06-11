@@ -36,7 +36,6 @@ class SeekBar extends React.Component {
   componentWillReceiveProps(nextProps) {
 
     if (nextProps.seekBarState.isFullFilled) {
-      console.log(nextProps.seekBarState.isFullFilled);
       this.setState({
         progressActiveWidth: 100,
         progressWidth: 0,
@@ -47,7 +46,6 @@ class SeekBar extends React.Component {
       const { songDuration, songCurrentTime } = nextProps.seekBarState;
       const progressActiveWidth = songCurrentTime / songDuration * 100;
       const progressWidth = 100 - progressActiveWidth;
-      console.log(nextProps.seekBarState);
       this.setState({
         progressActiveWidth,
         progressWidth,

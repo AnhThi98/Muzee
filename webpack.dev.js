@@ -23,7 +23,7 @@ module.exports = {
     extensions: ['.js', '.sass'],
     modules: ['node_modules', 'app'],
   },
-  devtool: 'cheap-eval-source-map',
+  devtool: 'source-map',
 
   plugins: [
     new DashboardPlugin(),

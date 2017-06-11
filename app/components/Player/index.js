@@ -4,6 +4,7 @@ import InputRange from 'react-input-range';
 import rewindIcon from '../../svg/ios-rewind.svg';
 import fastForwardIcon from '../../svg/ios-fastforward.svg';
 import pauseIcon from '../../svg/ios-pause.svg';
+import initAnalyzer from '../../utils/initAnalyzer';
 import './index.sass';
 
 const propTypes = {
@@ -23,6 +24,7 @@ class Player extends React.Component {
     this.state = {
       progress: 0,
       isSeeking: false,
+      isInit: false,
     };
   }
 
@@ -34,6 +36,8 @@ class Player extends React.Component {
       this.timer = setInterval(() => this.updateProgress(this.audio), 50);
     };
     this.audio.onpause = () => clearInterval(this.timer);
+    this.props.fetchSong();
+    initAnalyzer(this.audio);
   }
 
   componentWillUnmount() {
@@ -55,16 +59,26 @@ class Player extends React.Component {
 
   updateProgress(audio) {
     const lyric = this.props.songData.lyric;
-    if (!lyric) return;
+    const { updateSongCurrentTime } = this.props;
+    // update progress bar
+    let val = 0;
+    if (audio.currentTime > 0) {
+      val = (audio.currentTime / audio.duration * 100).toFixed(2);
+    }
+    if (!this.state.isSeeking) {
+      this.setState({ progress: val });
+    }
+
+    updateSongCurrentTime(this.audio.currentTime);
+
+    if (!lyric.length) return;
 
     const {
       playerState: { lyric1, lyric2 },
       updateLyricPercent,
       updateLyric,
-      updateSongCurrentTime,
     } = this.props;
 
-    updateSongCurrentTime(this.audio.currentTime);
 
     if (audio.currentTime > lyric[lyric.length - 1].end) {
       updateLyric([], []);
@@ -89,15 +103,6 @@ class Player extends React.Component {
       width = Math.ceil(width);
       width = width <=  0 ? 0 : (width > 96 ? 100 : width); // fill the karaoke text
       updateLyricPercent(100, width);
-    }
-
-    // update progress bar
-    let val = 0;
-    if (audio.currentTime > 0) {
-      val = (audio.currentTime / audio.duration * 100).toFixed(2);
-    }
-    if (!this.state.isSeeking) {
-      this.setState({ progress: val });
     }
   }
 

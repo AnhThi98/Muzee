@@ -1,17 +1,29 @@
 import React from 'react';
 import KaraokeLyric from 'react-karaoke-lyric';
-import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
 import SeekBar from './seekbar';
-import { updatePlayedPercent } from '../../actions/player';
 import './index.sass';
 
+const propTypes = {
+  playerState: PropTypes.object.isRequired,
+  seekBarState: PropTypes.object.isRequired,
+  updatePlayedPercent: PropTypes.func.isRequired,
+  cover: PropTypes.string.isRequired,
+};
 
 function SongHeader(props) {
   const { per1, per2, lyric1, lyric2 } = props.playerState;
 
   return (
-    <div className='songHeader'>
+    <div className='songHeader' style={{ background: `url(${props.cover})` }}>
       <div />
+      { props.showInfo
+        ? <div className="songHeader-info">
+          <h2>{props.name}</h2>
+          <h3>{props.artist}</h3>
+        </div>
+        : null
+      }
       <div className='karaokeWrapper'>
         <KaraokeLyric
           text={lyric1.text || ''}
@@ -34,9 +46,6 @@ function SongHeader(props) {
   );
 }
 
-function mapStateToProps(state) {
-  const { playerState, seekBarState } = state;
-  return { playerState, seekBarState };
-}
+SongHeader.propTypes = propTypes;
 
-export default connect(mapStateToProps, { updatePlayedPercent })(SongHeader);
+export default SongHeader;
